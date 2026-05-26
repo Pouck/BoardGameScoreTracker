@@ -1,0 +1,54 @@
+package com.example.boardgamescoretracker.data.db
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "games")
+data class GameEntity(
+    @PrimaryKey(autoGenerate = true)
+    val gameId: Int = 0,
+    val gameName: String,
+    val createdAt: Long = System.currentTimeMillis(),
+    val finishedAt: Long? = null,
+    val winningScore: Int? = null,
+    val currentRound: Int = 1,
+    val maxRounds: Int? = null,
+    val winnerNames: String? = null,
+    val startingPlayerId: Int? = null
+)
+
+@Entity(tableName = "players")
+data class PlayerEntity(
+    @PrimaryKey(autoGenerate = true)
+    val playerId: Int = 0,
+    val playerName: String,
+    val isActive: Boolean = true
+)
+
+@Entity(tableName = "scores")
+data class ScoreEntity(
+    @PrimaryKey(autoGenerate = true)
+    val scoreId: Int = 0,
+    val gameId: Int,
+    val playerId: Int,
+    val score: Int = 0,
+    val updatedAt: Long = System.currentTimeMillis()
+)
+
+@Entity(
+    tableName = "round_scores",
+    primaryKeys = ["gameId", "round", "playerId"]
+)
+data class RoundScoreEntity(
+    val gameId: Int,
+    val round: Int,
+    val playerId: Int,
+    val scoreIncrement: Int,
+    val wasStartingPlayer: Boolean = false
+)
+
+data class PlayerScore(
+    val playerId: Int,
+    val playerName: String,
+    val score: Int
+)

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Board Game Score Tracker</string>
+    <string name="new_game">New Game</string>
+    <string name="add_player">Add Player</string>
+    <string name="remove_player">Remove Player</string>
+    <string name="player_name">Player Name</string>
+    <string name="score">Score</string>
+    <string name="increment">+</string>
+    <string name="decrement">−</string>
+    <string name="finish_game">Finish Game</string>
+    <string name="game_history">Game History</string>
+    <string name="no_games">No games yet. Start a new game!</string>
+</resources>
