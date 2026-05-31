@@ -116,3 +116,15 @@ interface ScoreDao {
     @Query("UPDATE games SET currentRound = currentRound - 1 WHERE gameId = :gameId AND currentRound > 1")
     suspend fun decrementRound(gameId: Int)
 }
+
+@Dao
+interface CategoryScoreDao {
+    @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
+    suspend fun insertCategoryScore(score: CategoryScoreEntity)
+
+    @Query("SELECT * FROM category_scores WHERE gameId = :gameId")
+    fun getCategoryScoresForGame(gameId: Int): Flow<List<CategoryScoreEntity>>
+
+    @Query("DELETE FROM category_scores WHERE gameId = :gameId")
+    suspend fun deleteCategoryScores(gameId: Int)
+}

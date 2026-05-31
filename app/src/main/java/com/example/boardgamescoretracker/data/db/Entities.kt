@@ -14,7 +14,9 @@ data class GameEntity(
     val currentRound: Int = 1,
     val maxRounds: Int? = null,
     val winnerNames: String? = null,
-    val startingPlayerId: Int? = null
+    val startingPlayerId: Int? = null,
+    val gameType: String = "Generic",
+    val gameConfig: String? = null // For Wingspan: "Green" or "Blue"
 )
 
 @Entity(tableName = "players")
@@ -44,7 +46,19 @@ data class RoundScoreEntity(
     val round: Int,
     val playerId: Int,
     val scoreIncrement: Int,
-    val wasStartingPlayer: Boolean = false
+    val wasStartingPlayer: Boolean = false,
+    val rawWingspanValue: Int? = null // Rank (1-4) or Item Count
+)
+
+@Entity(
+    tableName = "category_scores",
+    primaryKeys = ["gameId", "playerId", "categoryName"]
+)
+data class CategoryScoreEntity(
+    val gameId: Int,
+    val playerId: Int,
+    val categoryName: String,
+    val scoreValue: Int
 )
 
 data class PlayerScore(

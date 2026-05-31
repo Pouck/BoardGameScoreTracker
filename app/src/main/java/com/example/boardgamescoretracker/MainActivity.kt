@@ -67,6 +67,6 @@ class ScoreTrackerApplication : Application() {
         database = ScoreTrackerDatabase.getInstance(this)
         gameRepository = GameRepository(database.gameDao(), database.scoreDao())
         playerRepository = PlayerRepository(database.playerDao())
-        scoreRepository = ScoreRepository(database.scoreDao())
+        scoreRepository = ScoreRepository(database.scoreDao(), database.categoryScoreDao())
     }
 }

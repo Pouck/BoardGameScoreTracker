@@ -8,6 +8,8 @@ import com.example.boardgamescoretracker.data.db.ScoreDao
 import com.example.boardgamescoretracker.data.db.ScoreEntity
 import com.example.boardgamescoretracker.data.db.PlayerScore
 import com.example.boardgamescoretracker.data.db.RoundScoreEntity
+import com.example.boardgamescoretracker.data.db.CategoryScoreDao
+import com.example.boardgamescoretracker.data.db.CategoryScoreEntity
 import kotlinx.coroutines.flow.Flow
 
 class GameRepository(
@@ -22,8 +24,8 @@ class GameRepository(
 
     suspend fun getGameByIdOneShot(gameId: Int): GameEntity? = gameDao.getGameById(gameId)
 
-    suspend fun createGame(gameName: String, winningScore: Int? = null, maxRounds: Int? = null): Long {
-        return gameDao.insertGame(GameEntity(gameName = gameName, winningScore = winningScore, maxRounds = maxRounds))
+    suspend fun createGame(gameName: String, winningScore: Int? = null, maxRounds: Int? = null, gameType: String = "Generic", gameConfig: String? = null): Long {
+        return gameDao.insertGame(GameEntity(gameName = gameName, winningScore = winningScore, maxRounds = maxRounds, gameType = gameType, gameConfig = gameConfig))
     }
 
     suspend fun incrementRound(gameId: Int) {
@@ -81,7 +83,8 @@ class PlayerRepository(
 }
 
 class ScoreRepository(
-    private val scoreDao: ScoreDao
+    private val scoreDao: ScoreDao,
+    private val categoryScoreDao: CategoryScoreDao
 ) {
     fun getGameScores(gameId: Int) = scoreDao.getGameScores(gameId)
 
@@ -91,8 +94,15 @@ class ScoreRepository(
     fun getRoundHistory(gameId: Int): Flow<List<RoundScoreEntity>> =
         scoreDao.getRoundHistoryForGame(gameId)
 
+    fun getCategoryScores(gameId: Int): Flow<List<CategoryScoreEntity>> =
+        categoryScoreDao.getCategoryScoresForGame(gameId)
+
     suspend fun updateScore(gameId: Int, playerId: Int, newScore: Int) {
         scoreDao.updatePlayerScore(gameId, playerId, newScore)
+    }
+
+    suspend fun updateCategoryScore(gameId: Int, playerId: Int, category: String, value: Int) {
+        categoryScoreDao.insertCategoryScore(CategoryScoreEntity(gameId, playerId, category, value))
     }
 
     suspend fun saveRoundScores(roundScores: List<RoundScoreEntity>) {

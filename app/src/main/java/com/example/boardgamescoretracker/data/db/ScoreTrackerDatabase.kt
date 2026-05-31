@@ -6,14 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [GameEntity::class, PlayerEntity::class, ScoreEntity::class, RoundScoreEntity::class],
-    version = 9,
+    entities = [GameEntity::class, PlayerEntity::class, ScoreEntity::class, RoundScoreEntity::class, CategoryScoreEntity::class],
+    version = 11,
     exportSchema = false
 )
 abstract class ScoreTrackerDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao
     abstract fun playerDao(): PlayerDao
     abstract fun scoreDao(): ScoreDao
+    abstract fun categoryScoreDao(): CategoryScoreDao
 
     companion object {
         @Volatile
@@ -25,7 +26,8 @@ abstract class ScoreTrackerDatabase : RoomDatabase() {
                     context.applicationContext,
                     ScoreTrackerDatabase::class.java,
                     "score_tracker.db"
-                ).build().also { instance = it }
+                ).fallbackToDestructiveMigration(true)
+                .build().also { instance = it }
             }
         }
     }
