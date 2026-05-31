@@ -1193,7 +1193,7 @@ fun ScoreBoardRow(
                         color = if (isHighlighted) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(horizontal = 4.dp)
                     )
-                    if (!isGameOver && wingspanStageLabel != "") {
+                    if (!isGameOver && (!isWingspan || wingspanStageLabel != "")) {
                         Text(
                             text = "(${if (delta >= 0) "+$delta" else "$delta"})",
                             style = if (isCompact) MaterialTheme.typography.labelSmall else MaterialTheme.typography.titleMedium,
